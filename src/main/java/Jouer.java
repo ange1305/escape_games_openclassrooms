@@ -12,27 +12,38 @@ public abstract class Jouer {
     private final int dificulte = this.dificulte();
     private final int nbEssai = this.nbEssai();
     private String aTrouver  = this.aTrouver(getDificulte());
+    private String aTrouverOrdi;
+    private String aProposerOrdi = "";
+    private int[][] valeurProposeOrdi = new int[getDificulte()][2];
+    private String annaliseOrdi = "";
 
     /* Début des Getter et des Setter */
-    public int getDevMode() {
-        return devMode;
-    }
+    public int getDevMode() { return devMode; }
 
-    public int getDificulte() {
-        return dificulte;
-    }
+    public int getDificulte() { return dificulte; }
 
-    public int getNbEssai() {
-        return nbEssai;
-    }
+    public int getNbEssai() { return nbEssai; }
 
-    public String getaTrouver() {
-        return aTrouver;
-    }
+    public String getaTrouver() { return aTrouver; }
 
-    public void setaTrouver(String aTrouver) {
-        this.aTrouver = aTrouver;
-    }
+    public String getaTrouverOrdi() { return aTrouverOrdi; }
+
+    public String getaProposerOrdi() { return aProposerOrdi; }
+
+    public int getValeurProposeOrdi(int a, int b) { return valeurProposeOrdi[a][b]; }
+
+    public String getAnnaliseOrdi() { return annaliseOrdi; }
+
+    public void setaTrouver(String aTrouver) { this.aTrouver = aTrouver; }
+
+    public void setaTrouverOrdi(String aTrouverOrdi) { this.aTrouverOrdi = aTrouverOrdi; }
+
+    public void setaProposerOrdi(String aProposerOrdi) { this.aProposerOrdi = aProposerOrdi; }
+
+    public void setValeurProposeOrdi(int a, int b, int valeurProposeOrdi) { this.valeurProposeOrdi[a][b] = valeurProposeOrdi; }
+
+    public void setAnnaliseOrdi(String annaliseOrdi) { this.annaliseOrdi = annaliseOrdi; }
+
     /* Fin des Getter et des Setter */
 
     /**
@@ -186,12 +197,72 @@ public abstract class Jouer {
      * Méthode pour afficher le résultat de l'annalise
      * @param proposition Variable qui contien la chaine que l'ordinateur propose
      * @param aTrouver Variable qui contien la chaine que l'on souhaite faire trouver à l'ordinateur
+     * @param nom Variable qui contien le nom de la personne qui à fait la proposition
      * @return Retourne un boolean à vrais si la solution a été trouvé
      */
     public boolean messageAnnalise(String proposition, String aTrouver, String nom){
         boolean valide = false;
         System.out.println("Proposition " + nom + ": " + proposition + " -> Réponce : " + annalise(proposition, aTrouver));
         if(proposition.equals(aTrouver))
+            valide = true;
+        return valide;
+    }
+
+    /**
+     * Méthode pour générer une proposition en fonction de l'annaliser qui a été faite
+     * @return Retourne une chaine de carractere avec la nouvelle proposition
+     */
+    public String propositionOrdi (){
+        String proposition = "";
+        /* On génére une proposition */
+        if(getaProposerOrdi().equals("")){
+            proposition = aTrouver(getDificulte());
+            setaProposerOrdi(proposition);
+        }else{
+            /* On annalise le résultat que l'on a obtenue */
+          //  String annalise = Static.annalise(getaProposer(), getaTrouver());
+            if(!getAnnaliseOrdi().contentEquals("")) {
+                /* On génére une nouvelle porposition */
+                for (int j = 0; j < getaTrouver().length(); j++) {
+                    String decoupeAnnalise = String.valueOf(getAnnaliseOrdi().charAt(j));
+                    int propose;
+                    if (decoupeAnnalise.contains("=")) {
+                        setValeurProposeOrdi(j, 0, Integer.parseInt(String.valueOf(getaProposerOrdi().charAt(j))));
+                        setValeurProposeOrdi(j, 1, Integer.parseInt(String.valueOf(getaProposerOrdi().charAt(j))));
+                        proposition += String.valueOf(getaProposerOrdi().charAt(j));
+                    } else if (decoupeAnnalise.contains("+")) {
+                        setValeurProposeOrdi(j, 0, Integer.parseInt(String.valueOf(getaProposerOrdi().charAt(j))));
+                        propose = aleatoireEntreMinMax(getValeurProposeOrdi(j, 0), getValeurProposeOrdi(j, 1));
+                        proposition += String.valueOf(propose);
+                    } else if (decoupeAnnalise.contains("-")) {
+                        setValeurProposeOrdi(j, 1, Integer.parseInt(String.valueOf(getaProposerOrdi().charAt(j))));
+                        propose = aleatoireEntreMinMax(getValeurProposeOrdi(j, 0), getValeurProposeOrdi(j, 1));
+                        proposition += String.valueOf(propose);
+                    }
+                }
+                setaProposerOrdi(proposition);
+            }else {
+                System.out.println("Faite l'annalise");
+            }
+        }
+        return proposition;
+    }
+
+    public boolean annaliseOrdi(int dificulte) {
+        boolean valide = false;
+        String resultAnnalise = "";
+        String regex = "(\\+|-|=)+";
+        while (resultAnnalise.length() < dificulte || resultAnnalise.length() > dificulte) {
+            do {
+                resultAnnalise = String.valueOf(Main.sc.next());
+                if (!resultAnnalise.matches(regex))
+                    System.out.println("Entrez uniquement + ou - ou = commme carractère.");
+            }while (!resultAnnalise.matches(regex));
+            if(resultAnnalise.length() != dificulte)
+                System.out.println("Vous n'avez pas correctement fais votre annalise.");
+        }
+        setAnnaliseOrdi(resultAnnalise);
+        if(resultAnnalise.matches("={" + dificulte + "}"))
             valide = true;
         return valide;
     }

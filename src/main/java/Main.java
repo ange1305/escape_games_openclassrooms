@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) {
         Main escapeGame = new Main();
+        System.out.println("Bienvenue dans l'escape game de chez GamePlay Studio");
         do {
-            System.out.println("Bienvenue dans l'escape game de chez GamePlay Studio");
             int mode = escapeGame.askMode();
             do {
                 switch (mode) {

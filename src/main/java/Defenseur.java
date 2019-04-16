@@ -5,7 +5,7 @@ public class Defenseur extends Jouer {
         System.out.println("Entrez la valeur à " + super.getDificulte() + " chifres que souhaité faire trouver à l'ordinateur.");
         super.setaTrouverOrdi(super.proposition(super.getDificulte()));
         if(super.getDevMode() == 1)
-            System.out.println("(Combinaison secrète pour l'ordinateur: " + super.getaTrouverOrdi() + ")");
+            System.out.println("(Combinaison secrète pour l'ordinateur : " + super.getaTrouverOrdi() + ")");
 
         /* On initialise la matrice des valeurs que l'ordinateur a proposé */
         for(int k = 0; k < super.getDificulte(); k++){

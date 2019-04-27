@@ -1,10 +1,13 @@
 package main.java;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Main {
 
+    private static final Logger LOGGER = LogManager.getLogger(Main.class.getName());
     public static Scanner sc = new Scanner(System.in);
     private int rejouer;
 

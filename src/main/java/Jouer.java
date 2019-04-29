@@ -7,7 +7,8 @@ import java.nio.file.Paths;
 import java.util.List;
 
 public abstract class Jouer {
-    private final Path config = Paths.get("./src/main/resources/config.properties"); // Emplacement fichier configuration
+    private final Path config = Paths.get("./classes/config.properties"); // Emplacement fichier configuration pour la prod
+    //private final Path config = Paths.get("./src/main/resources/config.properties"); // Emplacement fichier configuration pour le developement
     private final int devMode = this.devMode();
     private final int dificulte = this.dificulte();
     private final int nbEssai = this.nbEssai();

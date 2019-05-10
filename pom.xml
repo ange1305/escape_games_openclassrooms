@@ -27,6 +27,8 @@
                     <archive>
                         <!-- Création du Manifest pour la définition de la classe Main-->
                         <manifest>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
                             <mainClass>main.java.Main</mainClass>
                         </manifest>
                     </archive>

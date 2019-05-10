@@ -98,7 +98,7 @@ public class Main {
         boolean responseIsGood;
         do {
             System.out.println("Que souhaitez vous faire ?");
-            String[] listeChoix = {"Rejouer à ce jeu", "Jouer à un autre jeu", "Arreter de jouer"};
+            String[] listeChoix = {"Rejouer à ce jeu", "Jouer à un autre jeu", "Arrêter de jouer"};
             for(int i = 1; i <= listeChoix.length; i++)
                 System.out.println(i + " - " + listeChoix[i - 1]);
             try {

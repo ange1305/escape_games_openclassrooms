@@ -203,7 +203,7 @@ public abstract class Jouer {
      */
     public boolean messageAnnalise(String proposition, String aTrouver, String nom){
         boolean valide = false;
-        System.out.println("Proposition " + nom + ": " + proposition + " -> Réponce : " + annalise(proposition, aTrouver));
+        System.out.println("Proposition " + nom + ": " + proposition + " -> Réponse : " + annalise(proposition, aTrouver));
         if(proposition.equals(aTrouver))
             valide = true;
         return valide;
@@ -221,7 +221,6 @@ public abstract class Jouer {
             setaProposerOrdi(proposition);
         }else{
             /* On annalise le résultat que l'on a obtenue */
-          //  String annalise = Static.annalise(getaProposer(), getaTrouver());
             if(!getAnnaliseOrdi().contentEquals("")) {
                 /* On génére une nouvelle porposition */
                 for (int j = 0; j < getaTrouver().length(); j++) {

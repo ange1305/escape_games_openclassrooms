@@ -25,6 +25,6 @@ public class Defenseur extends Jouer {
             System.out.println("La solution a été trouvé en " + i + " essais.");
         else
             System.out.println("La solution n'a pas été trouvé.\n" +
-                    "La solution était : " + getaTrouver());
+                    "La solution était : " + super.getaTrouverOrdi());
     }
 }

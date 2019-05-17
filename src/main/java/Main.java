@@ -19,13 +19,13 @@ public class Main {
             do {
                 switch (mode) {
                     case 1:
-                        Jouer challenger = new Challenger();
+                        escapeGame.chalenger();
                         break;
                     case 2:
-                        Jouer defenseur = new Defenseur();
+                        escapeGame.defenseur();
                         break;
                     case 3:
-                        Jouer duel = new Duel();
+                        escapeGame.duel();
                         break;
                 }
                 escapeGame.setRejouer(escapeGame.rejouer());
@@ -44,6 +44,104 @@ public class Main {
         this.rejouer = rejouer;
     }
     /* Fin des Getter et des Setter */
+
+    /**
+     * Méthode pour les parties jouées en temps que chalenger
+     */
+    private void chalenger(){
+        Jouer challenger = new Challenger();
+        if(challenger.getDevMode() == 1)
+            System.out.println("(Combinaison secrète : " + challenger.getaTrouver() + ")");
+
+        System.out.println("Vous devez trouver une valeur à " + challenger.getDificulte() + " chiffre.");
+
+        boolean solutionTrouve = false;
+        int i;
+        for(i = 0; i < challenger.getNbEssai() && !solutionTrouve; i++){
+            System.out.println("Il vous reste " + (challenger.getNbEssai() - i) + " essais.");
+            solutionTrouve = challenger.messageAnnalise(challenger.proposition(challenger.getDificulte()), challenger.getaTrouver(), "");
+        }
+        if (solutionTrouve)
+            System.out.println("Bravo, vous avez trouver la solution " + challenger.getaTrouver() + " en " + i + " essais.");
+        else
+            System.out.println("Dommage, vous n'avez pas trouvé la solution.\n" +
+                    "La solution était : " + challenger.getaTrouver());
+    }
+
+    /**
+     * Méthode pour les parties jouées en temps que défenseur
+     */
+    private void defenseur(){
+        Jouer defenseur = new Defenseur();
+        System.out.println("Entrez la valeur à " + defenseur.getDificulte() + " chifres que souhaité faire trouver à l'ordinateur.");
+        defenseur.setaTrouverOrdi(defenseur.proposition(defenseur.getDificulte()));
+        if(defenseur.getDevMode() == 1)
+            System.out.println("(Combinaison secrète pour l'ordinateur : " + defenseur.getaTrouverOrdi() + ")");
+
+        /* On initialise la matrice des valeurs que l'ordinateur a proposé */
+        for(int k = 0; k < defenseur.getDificulte(); k++){
+            defenseur.setValeurProposeOrdi(k,0, -1);
+            defenseur.setValeurProposeOrdi(k,1,10);
+        }
+
+        boolean solutionTrouve = false;
+
+        int i;
+        for(i = 0; i < defenseur.getNbEssai() && !solutionTrouve; i++){
+            System.out.println("Il reste " + (defenseur.getNbEssai() - i) + " essais.");
+            defenseur.setaProposerOrdi(defenseur.propositionOrdi());
+            System.out.println("Proposition : " + defenseur.getaProposerOrdi());
+            solutionTrouve = defenseur.annaliseOrdi(defenseur.getDificulte());
+        }
+        if (solutionTrouve)
+            System.out.println("La solution a été trouvé en " + i + " essais.");
+        else
+            System.out.println("La solution n'a pas été trouvé.\n" +
+                    "La solution était : " + defenseur.getaTrouverOrdi());
+    }
+
+    /**
+     * Méthode pour les parties jouées en duel contre l'ordinateur
+     */
+    private void duel(){
+        Jouer duel = new Duel();
+        System.out.println("Entrez la valeur à " + duel.getDificulte() + " chifres que souhaité faire trouver à l'ordinateur.");
+        duel.setaTrouverOrdi(duel.proposition(duel.getDificulte()));
+        if(duel.getDevMode() == 1) {
+            System.out.println("(Combinaison secrète que le joueur doit trouver : " + duel.getaTrouver() + ")");
+            System.out.println("(Combinaison secrète que l'ordinateur doit trouver : " + duel.getaTrouverOrdi() + ")");
+        }
+
+        /* On initialise la matrice des valeurs que l'ordinateur a proposé */
+        for(int k = 0; k < duel.getDificulte(); k++){
+            duel.setValeurProposeOrdi(k,0, -1);
+            duel.setValeurProposeOrdi(k,1,10);
+        }
+
+        boolean okJoueur = false;
+        boolean okOrdi = false;
+
+        int i;
+        for (i = 0; i < duel.getNbEssai() && !okJoueur && !okOrdi; i++){
+            System.out.println("Il vous reste " + (duel.getNbEssai() - i) + " essais.");
+            okJoueur = duel.messageAnnalise(duel.proposition(duel.getDificulte()), duel.getaTrouver(), "joueur");
+            if(!okJoueur){
+                duel.setaProposerOrdi(duel.propositionOrdi());
+                System.out.println("Proposition ordinateur: " + duel.getaProposerOrdi());
+                okOrdi = duel.annaliseOrdi(duel.getDificulte());
+            }
+        }
+        if (okJoueur)
+            System.out.println("Bravo, vous avez trouver la solution en " + i + " essais.");
+        else
+            System.out.println("Dommage, vous n'avez pas trouvé la solution.\n" +
+                    "Vous deviez trouver : " + duel.getaTrouver());
+        if (okOrdi)
+            System.out.println("La solution a été trouvé par l'ordinateur en " + i + " essais.");
+        else
+            System.out.println("La solution n'a pas été trouvé par l'ordinateur.\n" +
+                    "L'ordinateur devait trouver : " + duel.getaTrouverOrdi());
+    }
 
     /**
      * Pour poser question choix mode de jeu
